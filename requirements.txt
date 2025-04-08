@@ -5,6 +5,9 @@ pymongo
 python-dotenv
 scikit-learn
 matplotlib
+pytest
+pytest-mock
+pytest-cov
 seaborn
 jupyter
 notebook

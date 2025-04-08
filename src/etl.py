@@ -1,16 +1,31 @@
 import pandas as pd
 from pymongo import MongoClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, Engine
 
 from src.config import MYSQL_CONFIG, MONGO_URI
 
 
-def get_mysql_connection():
-    url = f"mysql+pymysql://{MYSQL_CONFIG['user']}:{MYSQL_CONFIG['password']}@{MYSQL_CONFIG['host']}:{MYSQL_CONFIG['port']}/{MYSQL_CONFIG['database']}"
+def get_mysql_connection() -> Engine:
+    """
+    Establishes a connection to the MySQL database using the configuration from `MYSQL_CONFIG`.
+
+    Returns:
+        sqlalchemy.engine.base.Engine: A SQLAlchemy engine object for interacting with the MySQL database.
+    """
+    url = (f"mysql+pymysql://"
+           f"{MYSQL_CONFIG['user']}:{MYSQL_CONFIG['password']}@"
+           f"{MYSQL_CONFIG['host']}:{MYSQL_CONFIG['port']}/{MYSQL_CONFIG['database']}"
+           )
     return create_engine(url)
 
 
-def load_mysql_data():
+def load_mysql_data() -> tuple:
+    """
+    Loads data from the MySQL database.
+
+    Returns:
+        tuple: A tuple containing DataFrames for ventas, tickets, productos, and tiendas.
+    """
     engine = get_mysql_connection()
 
     ventas = pd.read_sql("SELECT * FROM Ventas", con=engine)
@@ -21,7 +36,13 @@ def load_mysql_data():
     return ventas, tickets, productos, tiendas
 
 
-def load_mongodb_data():
+def load_mongodb_data() -> tuple:
+    """
+    Loads data from MongoDB collections.
+
+    Returns:
+        tuple: A tuple containing DataFrames for sensor locations and sensor events.
+    """
     client = MongoClient(MONGO_URI)
     db = client["Prueba_Tecnica"]
 
@@ -31,7 +52,26 @@ def load_mongodb_data():
     return sensores, eventos
 
 
-def transform_data(ventas, tickets, tiendas, sensores, eventos):
+def transform_data(
+        ventas: pd.DataFrame,
+        tickets: pd.DataFrame,
+        tiendas: pd.DataFrame,
+        sensores: pd.DataFrame,
+        eventos: pd.DataFrame
+) -> pd.DataFrame:
+    """
+    Transforms and combines data from MySQL and MongoDB into a unified dataset.
+
+    Args:
+        ventas (pd.DataFrame): Sales data from MySQL.
+        tickets (pd.DataFrame): Ticket data from MySQL.
+        tiendas (pd.DataFrame): Store data from MySQL.
+        sensores (pd.DataFrame): Sensor location data from MongoDB.
+        eventos (pd.DataFrame): Sensor event data from MongoDB.
+
+    Returns:
+        pd.DataFrame: A cleaned and merged dataset ready for analysis and modeling.
+    """
     # Combinar ventas con tickets y tiendas
     ventas_tickets = ventas.merge(tickets, on='factura_id', suffixes=('', '_ticket'))
     ventas_tickets_tiendas = ventas_tickets.merge(tiendas, left_on='tienda_id', right_on='id', suffixes=('', '_tienda'))
@@ -77,7 +117,13 @@ def transform_data(ventas, tickets, tiendas, sensores, eventos):
 
 
 
-def run_etl():
+def run_etl() -> pd.DataFrame:
+    """
+    Runs the ETL process by loading data from MySQL and MongoDB, transforming it, and returning the final dataset.
+
+    Returns:
+        pd.DataFrame: The transformed dataset ready for analysis or modeling.
+    """
     print("Cargando datos de MySQL y MongoDB...")
     ventas, tickets, productos, tiendas = load_mysql_data()
     sensores, eventos = load_mongodb_data()

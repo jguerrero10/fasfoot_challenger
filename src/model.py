@@ -4,7 +4,13 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, r2_score
 from src.etl import run_etl
 
-def train_model():
+def train_model() -> tuple:
+    """
+        Trains a Random Forest model using sales data and evaluates its performance.
+
+        Returns:
+            tuple: A tuple containing the trained model and a DataFrame with real vs predicted sales.
+    """
     print("Ejecutando ETL...")
     df = run_etl()
 
