@@ -65,3 +65,34 @@ export MYSQL_HOST="localhost"
 export MYSQL_DB="ventas"
 ```
 
+## Testing
+Los tests están ubicados en tests/ y cubren las funciones principales del ETL y el entrenamiento del modelo.
+
+### Cobertura de código (coverage)
+
+Para ejecutar la cobertura de código, asegúrate de tener `pytest` y `pytest-cov` instalados. Luego, ejecuta:
+
+```bash
+pytest --cov=src tests/
+```
+Esto generará un informe de cobertura en la consola y creará un archivo `htmlcov/index.html` que puedes abrir en tu navegador para ver un informe detallado.
+
+Actualmente la cobertura es:
+
+```plaintext
+Name              Stmts   Miss  Cover
+-------------------------------------
+src/etl.py           45      0   100%
+src/model.py         26      0   100%
+src/config.py         5      0   100%
+-------------------------------------
+TOTAL                76      0   100%
+```
+
+También puedes generar un reporte HTML:
+
+```bash
+pytest --cov=src --cov-report=html
+```
+
+Esto generará un directorio `htmlcov` con un informe HTML que puedes abrir en tu navegador.
