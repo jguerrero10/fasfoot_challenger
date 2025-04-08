@@ -4,7 +4,7 @@ Este proyecto tiene como objetivo evaluar la relación entre las precipitaciones
 
 ---
 
-## Flujo del proyecto
+## 🚀 Flujo del proyecto
 
 1. **ETL con Python**:
    - Extracción de datos desde MySQL y MongoDB Atlas.
@@ -23,16 +23,45 @@ Este proyecto tiene como objetivo evaluar la relación entre las precipitaciones
 
 ---
 
-## Estructura
+## 📂 Estructura
 
 - `src/`: scripts de conexión, ETL y modelado.
 - `notebooks/`: análisis visual (`.ipynb`) y versión exportada en `.pdf`.
 
 ---
 
-## Requisitos
+## 📦 Requisitos
 
 Instalar dependencias con:
 
 ```bash
 pip install -r requirements.txt
+```
+
+## Variables de entorno
+
+Este proyecto utiliza variables de entorno para proteger información sensible como credenciales de conexión. Puedes definirlas de dos formas:
+
+### Opcion 1: Usando un archivo `.env`
+
+Crea un archivo .env en la raíz del proyecto con el siguiente contenido:
+
+```dotenv
+MONGO_URI=mongodb+srv://<usuario>:<password>@<cluster>.mongodb.net
+DB_USER==<usuario_mysql>
+DB_PASSWORD=<contraseña_mysql>
+DB_HOST=<host_mysql>
+DB_PORT=<puerto_mysql>
+DB_NAME=<nombre_base_de_datos>
+```
+
+### Opción 2: Definiendo variables de entorno en tu sistema
+
+```bash
+export MONGO_URI="mongodb+srv://user:pass@cluster.mongodb.net"
+export MYSQL_USER="root"
+export MYSQL_PASSWORD="1234"
+export MYSQL_HOST="localhost"
+export MYSQL_DB="ventas"
+```
+
