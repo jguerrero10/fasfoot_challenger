@@ -1,0 +1,10 @@
+pandas
+sqlalchemy
+pymysql
+pymongo
+python-dotenv
+scikit-learn
+matplotlib
+seaborn
+jupyter
+notebook
